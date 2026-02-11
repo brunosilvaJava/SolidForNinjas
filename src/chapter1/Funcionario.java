@@ -1,4 +1,4 @@
 package chapter1;
 
-public record Funcionario(String nome, String cargo, double salarioBase) {
+public record Funcionario(String nome, Cargo cargo, double salarioBase) {
 }

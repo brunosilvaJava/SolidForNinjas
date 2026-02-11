@@ -1,24 +1,28 @@
 package chapter1;
 
+import java.util.stream.Stream;
+
 public class CalculadoraDeSalarioImpl implements CalculadoraDeSalario {
 
     private static final String DESENVOLVEDOR = "DESENVOLVEDOR";
     private static final String DBA = "DBA";
     private static final String TESTER = "TESTER";
 
+    @Override
     public double calcula(Funcionario funcionario) {
 
-        if (DESENVOLVEDOR.equals(funcionario.cargo())) {
-            return new CalculoSalario("dezOuVintePorcento", 3000.0, 2.9, 0.8)
-                    .calcula(funcionario.salarioBase());
+        if (isCargoInvalido(funcionario.cargo())) {
+            throw new IllegalArgumentException("Cargo inválido");
         }
 
-        if (DBA.equals(funcionario.cargo()) || TESTER.equals(funcionario.cargo())) {
-            return new CalculoSalario("quinzeOuVinteCincoPorcento", 2000.0, 2.85, 0.75)
-                    .calcula(funcionario.salarioBase());
-        }
+        CalculoSalario calculoSalario = funcionario.cargo().calculoSalario();
 
-        throw new RuntimeException("funcionario invalido");
+        return calculoSalario.calcula(funcionario.salarioBase());
+    }
+
+    private boolean isCargoInvalido(Cargo cargo) {
+        return Stream.of(DESENVOLVEDOR, DBA, TESTER)
+                .noneMatch(cargo.descricao()::equalsIgnoreCase);
     }
 
 }
