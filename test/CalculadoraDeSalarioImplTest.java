@@ -1,5 +1,5 @@
 import chapter1.CalculadoraDeSalarioImpl;
-import chapter1.CalculoSalario;
+import chapter1.RegraCalculoSalario;
 import chapter1.Cargo;
 import chapter1.Funcionario;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ public class CalculadoraDeSalarioImplTest {
                 "João",
                 buildDesenvolvedor(),
                 3000.0);
-        var salario = calculadora.calcula(funcionario);
+        var salario = calculadora.executa(funcionario);
         assert salario == 2700.0;
     }
 
@@ -24,7 +24,7 @@ public class CalculadoraDeSalarioImplTest {
                 "Maria",
                 buildDesenvolvedor(),
                 4000.0);
-        var salario = calculadora.calcula(funcionario);
+        var salario = calculadora.executa(funcionario);
         assert salario == 3200.0;
     }
 
@@ -34,7 +34,7 @@ public class CalculadoraDeSalarioImplTest {
         var funcionario = new Funcionario("Carlos",
                 buildDba(),
                 2000.0);
-        var salario = calculadora.calcula(funcionario);
+        var salario = calculadora.executa(funcionario);
         assert salario == 1700.0;
     }
 
@@ -44,7 +44,7 @@ public class CalculadoraDeSalarioImplTest {
         var funcionario = new Funcionario("Ana",
                 buildDba(),
                 3000.0);
-        var salario = calculadora.calcula(funcionario);
+        var salario = calculadora.executa(funcionario);
         assert salario == 2250.0;
     }
 
@@ -54,7 +54,7 @@ public class CalculadoraDeSalarioImplTest {
         var funcionario = new Funcionario("Pedro",
                 buildTester(),
                 2000.0);
-        var salario = calculadora.calcula(funcionario);
+        var salario = calculadora.executa(funcionario);
         assert salario == 1700.0;
     }
 
@@ -65,7 +65,7 @@ public class CalculadoraDeSalarioImplTest {
                 buildGerente(),
                 5000.0);
         try {
-            calculadora.calcula(funcionario);
+            calculadora.executa(funcionario);
             assert false;
         } catch (IllegalArgumentException e) {
             assert e.getMessage().equals("Cargo inválido");
@@ -91,12 +91,20 @@ public class CalculadoraDeSalarioImplTest {
         return new Cargo("GERENTE", null);
     }
 
-    private static CalculoSalario buildDezOuVintePorcento() {
-        return new CalculoSalario("dezOuVintePorcento", 3000.0, 0.9, 0.8);
+    private static RegraCalculoSalario buildDezOuVintePorcento() {
+        return new RegraCalculoSalario(
+                "dezOuVintePorcento",
+                3000.0,
+                0.9,
+                0.8);
     }
 
-    private static CalculoSalario buildQuinzeOuVinteCincoPorcento() {
-        return new CalculoSalario("quinzeOuVinteCincoPorcento", 2000.0, 0.85, 0.75);
+    private static RegraCalculoSalario buildQuinzeOuVinteCincoPorcento() {
+        return new RegraCalculoSalario(
+                "quinzeOuVinteCincoPorcento",
+                2000.0,
+                0.85,
+                0.75);
     }
 
 }

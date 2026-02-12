@@ -9,15 +9,20 @@ public class CalculadoraDeSalarioImpl implements CalculadoraDeSalario {
     private static final String TESTER = "TESTER";
 
     @Override
-    public double calcula(Funcionario funcionario) {
+    public double executa(Funcionario funcionario) {
 
         if (isCargoInvalido(funcionario.cargo())) {
             throw new IllegalArgumentException("Cargo inválido");
         }
 
-        CalculoSalario calculoSalario = funcionario.cargo().calculoSalario();
+        RegraCalculoSalario calculoSalario = funcionario.cargo().calculoSalario();
 
-        return calculoSalario.calcula(funcionario.salarioBase());
+        var salarioBase = funcionario.salarioBase();
+
+        if (salarioBase > calculoSalario.valorBase()) {
+            return salarioBase * calculoSalario.porcentMaior();
+        }
+        return salarioBase * calculoSalario.porcentMenor();
     }
 
     private boolean isCargoInvalido(Cargo cargo) {
